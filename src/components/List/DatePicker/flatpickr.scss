@@ -1,0 +1,146 @@
+//@use "~@/assets/styles/custom-media.scss";
+
+.flatpickr-calendar {
+  //@apply lg:--bg
+  
+  --bd-color: #d9d9d9;
+  
+  top: 0 !important;
+  left: 0 !important;
+  
+  display: inline-block !important;
+  width: 100%;
+  
+  box-shadow: none;
+  
+  //noinspection CssInvalidMediaFeature
+  //@media screen and (--desktop) {
+  //  --bd-color: #ebebeb;
+  //}
+}
+
+.flatpickr-calendar::before,
+.flatpickr-calendar::after {
+  content: none;
+}
+
+.flatpickr-months {
+  display: none;
+}
+
+.flatpickr-innerContainer {
+  background: #fff;
+  overflow: visible;
+}
+
+.flatpickr-weekdays {
+  display: none;
+}
+
+span.flatpickr-weekday {
+  font-size: 0;
+}
+
+.flatpickr-rContainer,
+.flatpickr-days,
+.dayContainer {
+  width: 100%;
+}
+
+.dayContainer {
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  
+  box-shadow: 0 15px 20px rgba(0, 0, 0, 0.1);
+}
+
+.flatpickr-day,
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay,
+.flatpickr-day.selected {
+  border-color: var(--bd-color);
+}
+
+.flatpickr-day {
+  --bdrs: 5px;
+  
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  
+  width: auto;
+  max-width: 100%;
+  height: var(--datepicker-cell-size);
+  
+  background-color: #f7f7f7;
+  
+  font-size: 1.2rem;
+  line-height: 1em;
+  
+  border-right-width: 0;
+  border-bottom-width: 0;
+  border-radius: 0;
+  
+  //noinspection CssInvalidMediaFeature
+  //@media screen and (--tablet) {
+  //  font-size: calc(1.2rem * var(--mod, 1.5));
+  //}
+  //
+  ////noinspection CssInvalidMediaFeature
+  //@media screen and (--desktop) {
+  //  --bdrs: 0;
+  //
+  //  background-color: #f9f9f9;
+  //  border-left-width: 0;
+  //}
+}
+
+.flatpickr-day:nth-child(7n) {
+  border-right-width: 1px;
+}
+
+.flatpickr-day:nth-child(7n - 6) {
+  @apply lg:border-l;
+  //noinspection CssInvalidMediaFeature
+  //@media screen and (--desktop) {
+  //  border-left-width: 1px;
+  //}
+}
+
+.flatpickr-day:nth-child(-n + 7) {
+  @apply lg:border-t-0;
+  //noinspection CssInvalidMediaFeature
+  //@media screen and (--desktop) {
+  //  border-top-width: 0;
+  //}
+}
+
+.flatpickr-day:nth-last-child(-n+7) {
+  border-bottom-width: 1px;
+}
+
+.flatpickr-day:first-child {
+  @apply rounded-tl-lg;
+  //border-top-left-radius: var(--bdrs);
+}
+
+.flatpickr-day:last-child {
+  @apply rounded-br-lg;
+  //border-bottom-right-radius: var(--bdrs);
+}
+
+.flatpickr-day:nth-child(7) {
+  @apply rounded-tr-lg;
+  //border-top-right-radius: var(--bdrs);
+}
+
+.flatpickr-day:nth-last-child(7) {
+  @apply rounded-bl-lg;
+  //border-bottom-left-radius: var(--bdrs);
+}
+
+
+.flatpickr-day.selected {
+  background-color: #000;
+}
