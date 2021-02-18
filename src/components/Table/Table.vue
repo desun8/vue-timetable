@@ -1,45 +1,61 @@
 <template>
   <div id="table-view">
-    <h2 class="text-xl text-center">Таблица</h2>
-
-    <WeekSwitcher :week-start="weekStart" :week-end="weekEnd" :change-week="setActiveWeek" />
+    <WeekSwitcher
+      :week-start="weekStart"
+      :week-end="weekEnd"
+      :change-week="setActiveWeek"
+    />
 
     <div class="table-v">
       <div class="table__header">
-        <div class="table__row  grid grid-cols-7">
+        <div class="table__row  grid grid-cols-7 gap">
           <div
             class="table__col"
             v-for="day in weekDays[activeWeek]"
             :key="day.date"
           >
-            <div class="table__cell table__cell--day">
+            <div
+              class="table__cell table__cell--day  py-2 text-xl border-b border-black capitalize text-center"
+              :class="{ 'bg-gray-800 text-white': day.date === today }"
+            >
               {{ day.day }}
             </div>
           </div>
         </div>
       </div>
 
-      <div class="body  grid grid-cols-7">
-        <div class="col" v-for="day in weekDays[activeWeek]" :key="day.date">
+      <Simplebar style="height: calc(100vh - 200px); overflow-x: hidden;">
+        <div class="body  grid grid-cols-7 pt-7 pb-10 gap">
           <div
-            class="cell  p-2 border-2 border-blue-200"
-            v-for="(item, index) in items"
-            :key="index"
-            v-show="item.date === day.date"
+            class="col  grid gap content-start"
+            v-for="day in weekDays[activeWeek]"
+            :key="day.date"
           >
-            {{ item.name }}
+            <div
+              class="cell  px-3 py-5 border transition duration-300 hover:border-black hover:shadow-xl"
+              v-for="(item, index) in items"
+              :key="index"
+              v-show="item.date === day.date"
+            >
+              <Card :item="item" type="TABLE" />
+            </div>
           </div>
         </div>
-      </div>
+      </Simplebar>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { DataItem, DataWeeks } from "@/fetchData";
+
+import Simplebar from "simplebar-vue";
+
 import { dateFormat } from "@/utils/setFormatDate";
 import WeekSwitcher from "@/components/Table/WeekSwitcher/WeekSwitcher.vue";
+import Card from "@/components/Card/Card.vue";
+import { TODAY } from "@/App.vue";
+import { DataItem, DataWeeks } from "@/data.model";
 
 export enum Week {
   Current,
@@ -55,6 +71,7 @@ const DAYS = [
   "Суббота",
   "Воскресенье"
 ];
+
 const getDate = (date: string): number => {
   const match = date.match(/[0-9]+$/);
 
@@ -67,13 +84,18 @@ const getDate = (date: string): number => {
 };
 
 @Component({
-  components: { WeekSwitcher }
+  components: {
+    Simplebar,
+    WeekSwitcher,
+    Card
+  }
 })
 export default class TableView extends Vue {
   @Prop() readonly items!: DataItem[];
   @Prop() readonly weeks!: DataWeeks;
 
   activeWeek = Week.Current;
+  today = dateFormat.YYYY_MM_DD_2(TODAY);
 
   get weekDays() {
     const startDate = this.weeks[0];
@@ -105,22 +127,34 @@ export default class TableView extends Vue {
   }
 
   get weekStart() {
-    return this.weekDays[this.activeWeek][0].date;
+    return this.weekDays[this.activeWeek][0].date
+      .split("-")
+      .reverse()
+      .join(".");
   }
 
   get weekEnd() {
     const lastIndex = this.weekDays[this.activeWeek].length - 1;
-    return this.weekDays[this.activeWeek][lastIndex].date;
+    return this.weekDays[this.activeWeek][lastIndex].date
+      .split("-")
+      .reverse()
+      .join(".");
   }
 
   setActiveWeek(value: Week) {
     this.activeWeek = value;
   }
-
-  mounted() {
-    console.log(this.weekDays);
-  }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.gap {
+  @apply gap-2 2xl:gap-5;
+}
+</style>
+
+<style>
+#table-view .simplebar-track.simplebar-vertical {
+  display: none;
+}
+</style>

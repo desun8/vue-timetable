@@ -1,6 +1,6 @@
 <template>
   <div
-    class="date-picker__header  grid grid-flow-col"
+    class="date-picker__header  grid grid-flow-col border rounded transition-colors ease-in lg:grid-cols-picker-header lg:border-b-0 lg:rounded-none"
     :class="{ 'bg-black text-white': isOpen }"
   >
     <BtnChangeDate type="prev" :date-picker="datePicker" />

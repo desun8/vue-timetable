@@ -1,4 +1,4 @@
-const smallScreen = window.matchMedia("(max-width: 60em)");
+const smallScreen = window.matchMedia("(max-width: 63.999em)"); // 1023.984px
 
 export const isSmallScreen = smallScreen.matches;
 
@@ -18,5 +18,3 @@ export const mediaQueryEvent = (
 
   smallScreen.addEventListener("change", handleTabletChange);
 };
-
-// export default isMobile;

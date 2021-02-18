@@ -1,7 +1,11 @@
 <template>
   <div
-    class="date-picker__inner  absolute top-full left-0 w-full pt-4 bg-white opacity-0 z-50"
-    :class="{ 'animate-fade-in-down': isOpen, 'opacity-1': isInline }"
+    class="date-picker__inner w-full bg-white z-50"
+    :class="{
+      'animate-fade-in-down': isOpen,
+      'relative opacity-100': isInline,
+      'absolute top-full left-0 pt-4 opacity-0': !isInline
+    }"
     ref="datepickerWrap"
     aria-hidden="true"
   >

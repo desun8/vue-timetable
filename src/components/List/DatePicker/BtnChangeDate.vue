@@ -1,12 +1,16 @@
 <template>
   <button
-    class="btn flex items-center justify-center p-1 border transform"
-    :class="{ 'rotate-180': !isNext }"
+    class="btn flex items-center justify-center py-5 px-1 border-0 border-l-2 transform disabled:opacity-30 lg:w-16 lg:h-16 lg:border-l"
+    :class="{
+      'rotate-180': !isNext,
+      'lg:border-transparent lg:shadow-border-hack': isNext
+    }"
     @click="handleClick"
     :aria-label="label"
+    :disabled="!allowClick"
   >
     <svg
-      class="btn__icon"
+      class="btn__icon  fill-current"
       viewBox="0 0 30 55"
       xmlns="http://www.w3.org/2000/svg"
       fill-rule="evenodd"
@@ -32,12 +36,11 @@ import {
   Vue
 } from "vue-property-decorator";
 import { Instance } from "flatpickr/dist/types/instance";
-import { dateFormat } from "@/utils/setFormatDate";
 
 @Component
 export default class BtnChangeDate extends Vue {
-  @Inject() readonly pIsMobile!: boolean;
   @Inject() readonly pSetSelectedDate!: Function;
+  @InjectReactive() readonly pIsMobile!: boolean;
   @InjectReactive() readonly pSelectedDate!: Date;
 
   @Prop({ default: "" }) readonly type!: string;
@@ -55,12 +58,29 @@ export default class BtnChangeDate extends Vue {
     return this.isNext ? "следующий месяц" : "предыдущий месяц";
   }
 
+  get allowClick() {
+    const currDate = this.pSelectedDate;
+    const minDate = this.datePicker?.config.minDate;
+    const maxDate = this.datePicker?.config.maxDate;
+
+    if (minDate && maxDate) {
+      if (this.isNext) {
+        return currDate < maxDate;
+      } else {
+        return currDate > minDate;
+      }
+    }
+
+    return true;
+  }
+
   handleClick(): void {
     if (
       this.pIsMobile &&
       this.pSelectedDate &&
       this.pSetSelectedDate &&
-      this.datePicker
+      this.datePicker &&
+      this.allowClick
     ) {
       const pSelectedDate = this.pSelectedDate;
 
@@ -81,67 +101,7 @@ export default class BtnChangeDate extends Vue {
       }
 
       this.datePicker.setDate(pSelectedDate);
-
-      console.log(
-        "selectedDate ",
-        dateFormat.YYYY_MM_DD(pSelectedDate as Date)
-      );
     }
   }
 }
 </script>
-
-<!--<style scoped lang="scss">-->
-<!--@use "~@/assets/styles/custom-media.scss";-->
-
-<!--.btn {-->
-<!--  &#45;&#45;bdrs: 5px;-->
-
-<!--  display: flex;-->
-<!--  justify-content: center;-->
-<!--  align-items: center;-->
-
-<!--  background-color: var(&#45;&#45;bg-color);-->
-<!--  border: var(&#45;&#45;bd-width, 1px) solid var(&#45;&#45;bd-color, #dadada);-->
-
-<!--  transition: background-color var(&#45;&#45;trs-dur);-->
-
-<!--  //noinspection CssInvalidMediaFeature-->
-<!--  @media screen and (&#45;&#45;desktop) {-->
-<!--    &#45;&#45;bdrs: 0;-->
-<!--  }-->
-<!--}-->
-
-<!--.btn&#45;&#45;next {-->
-<!--  border-top-right-radius: var(&#45;&#45;bdrs);-->
-<!--  border-bottom-right-radius: var(&#45;&#45;bdrs);-->
-<!--}-->
-
-<!--.btn&#45;&#45;prev {-->
-<!--  border-top-left-radius: var(&#45;&#45;bdrs);-->
-<!--  border-bottom-left-radius: var(&#45;&#45;bdrs);-->
-<!--}-->
-
-<!--.btn__icon {-->
-<!--  &#45;&#45;size: 1.4rem;-->
-
-<!--  width: var(&#45;&#45;size);-->
-<!--  height: var(&#45;&#45;size);-->
-
-<!--  fill: currentColor;-->
-
-<!--  //noinspection CssInvalidMediaFeature-->
-<!--  @media screen and (&#45;&#45;tablet) {-->
-<!--    &#45;&#45;size: calc(1.4rem * var(&#45;&#45;mod, 1.5));-->
-<!--  }-->
-
-<!--  //noinspection CssInvalidMediaFeature-->
-<!--  @media screen and (&#45;&#45;desktop) {-->
-<!--    &#45;&#45;size: 1.4rem;-->
-<!--  }-->
-<!--}-->
-
-<!--.btn&#45;&#45;prev .btn__icon {-->
-<!--  transform: scaleX(-1);-->
-<!--}-->
-<!--</style>-->

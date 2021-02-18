@@ -1,8 +1,10 @@
 <template>
-  <div class="grid grid-flow-col justify-center gap-10">
-    <Button :is-next="false" :change-week="changeWeek" text="< Prev" />
-    <span>{{ weekStart }} - {{ weekEnd }}</span>
-    <Button :is-next="true" :change-week="changeWeek" text="Next >" />
+  <div class="grid grid-flow-col justify-center gap-10 mb-5">
+    <Button :is-next="false" :change-week="changeWeek" />
+    <span class="text-5xl font-medium">
+      <span class="stroke">{{ weekStart }} - </span><span>{{ weekEnd }}</span>
+    </span>
+    <Button :is-next="true" :change-week="changeWeek" />
   </div>
 </template>
 
@@ -18,3 +20,10 @@ export default class WeekSwitcher extends Vue {
   @Prop() readonly changeWeek!: Function;
 }
 </script>
+
+<style scoped>
+.stroke {
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1px currentColor;
+}
+</style>

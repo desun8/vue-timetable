@@ -5,12 +5,13 @@
       class="picker__input  relative w-full h-full bg-transparent text-transparent z-10"
       ref="pickerElm"
       readonly
+      :disabled="!pIsMobile"
     />
     <label
       for="picker"
       class="picker__label  absolute top-0 left-0 w-full h-full flex justify-center items-center bg-transparent"
     >
-      <span class="picker__value">{{ formatDate }}</span>
+      <span class="picker__value  lg:capitalize">{{ formatDate }}</span>
       <svg
         class="w-6 h-6 ml-4 fill-current"
         xmlns="http://www.w3.org/2000/svg"
@@ -30,12 +31,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Inject, InjectReactive, Vue } from "vue-property-decorator";
+import { Component, InjectReactive, Vue } from "vue-property-decorator";
 import { dateFormat } from "@/utils/setFormatDate";
 
 @Component
 export default class PickerInput extends Vue {
-  @Inject() readonly pIsMobile!: boolean;
+  @InjectReactive() readonly pIsMobile!: boolean;
   @InjectReactive() readonly pSelectedDate!: Date;
 
   today = new Date();

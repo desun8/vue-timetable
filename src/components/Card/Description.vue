@@ -1,5 +1,5 @@
 <template>
-  <span class="hidden">{{ text }}</span>
+  <span class="sr-only">{{ text }}</span>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
