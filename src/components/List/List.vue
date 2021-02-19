@@ -74,6 +74,10 @@ export default class ListView extends Vue {
 </script>
 
 <style>
+#list-view .simplebar-wrapper {
+  position: relative;
+}
+
 #list-view .simplebar-track.simplebar-vertical {
   top: 50%;
   width: 1px;
